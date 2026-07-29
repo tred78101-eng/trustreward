@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>PaidBucksy - TrustReward</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+
+    body {
+      background: #000;
+      color: #fff;
+    }
+
+    .paidbucksy-page {
+      min-height: 100vh;
+      padding: 20px;
+      padding-bottom: 40px;
+      background: #000;
+    }
+
+    .paidbucksy-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .paidbucksy-back {
+      width: 44px;
+      height: 44px;
+      border: 1px solid #d4af37;
+      border-radius: 12px;
+      background: #000;
+      color: #d4af37;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .paidbucksy-title h1 {
+      margin: 0;
+      color: #d4af37;
+      font-size: 24px;
+    }
+
+    .paidbucksy-title p {
+      margin: 5px 0 0;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .paidbucksy-card {
+      background: #000;
+      border: 1px solid #d4af37;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 0 18px rgba(212, 175, 55, .12);
+    }
+
+    .paidbucksy-card-top {
+      padding: 16px;
+      border-bottom: 1px solid rgba(212, 175, 55, .35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .paidbucksy-card-top i {
+      color: #d4af37;
+      font-size: 20px;
+    }
+
+    .paidbucksy-card-top h2 {
+      margin: 0;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .paidbucksy-frame-wrap {
+      width: 100%;
+      min-height: 800px;
+      background: #000;
+    }
+
+    #paidbucksy-frame {
+      display: block;
+      width: 100%;
+      height: 800px;
+      border: 0;
+      background: #000;
+    }
+
+    .loading-box,
+    .error-box-page {
+      padding: 40px 20px;
+      text-align: center;
+      color: #aaa;
+    }
+
+    .loading-box i {
+      color: #d4af37;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .error-box-page {
+      color: #ff7777;
+    }
+
+    @media (max-width: 600px) {
+
+      .paidbucksy-page {
+        padding: 14px;
+      }
+
+      #paidbucksy-frame {
+        height: 800px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <main class="paidbucksy-page">
+
+
+    <header class="paidbucksy-header">
+
+      <button
+        class="paidbucksy-back"
+        onclick="history.back()"
+      >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+      </button>
+
+
+      <div class="paidbucksy-title">
+
+        <h1>
+          PaidBucksy
+        </h1>
+
+        <p>
+          Complete offers and earn TrustReward coins
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <section class="paidbucksy-card">
+
+
+      <div class="paidbucksy-card-top">
+
+        <i class="fa-solid fa-gift"></i>
+
+        <h2>
+          Available Offers
+        </h2>
+
+      </div>
+
+
+      <div
+        id="loading-box"
+        class="loading-box"
+      >
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <p>
+          Loading offers...
+        </p>
+
+      </div>
+
+
+      <div
+        id="error-box"
+        class="error-box-page"
+        style="display:none;"
+      >
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        <p>
+          Please log in to view PaidBucksy offers.
+        </p>
+
+      </div>
+
+
+      <div
+        id="frame-wrap"
+        class="paidbucksy-frame-wrap"
+        style="display:none;"
+      >
+
+        <iframe
+          id="paidbucksy-frame"
+          scrolling="yes"
+          frameborder="0"
+        ></iframe>
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyCzZIrEyMnuvDPPqXl6m1ODxacEFfKyWxI",
+
+      authDomain:
+        "trustreward-19165.firebaseapp.com",
+
+      databaseURL:
+        "https://trustreward-19165-default-rtdb.firebaseio.com",
+
+      projectId:
+        "trustreward-19165",
+
+      storageBucket:
+        "trustreward-19165.firebasestorage.app",
+
+      messagingSenderId:
+        "156070844909",
+
+      appId:
+        "1:156070844909:web:8625342638350641ffafe4"
+
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const auth =
+      getAuth(app);
+
+
+    const loadingBox =
+      document.getElementById("loading-box");
+
+
+    const errorBox =
+      document.getElementById("error-box");
+
+
+    const frameWrap =
+      document.getElementById("frame-wrap");
+
+
+    const frame =
+      document.getElementById("paidbucksy-frame");
+
+
+    onAuthStateChanged(
+      auth,
+      (user) => {
+
+
+        if (!user) {
+
+          loadingBox.style.display =
+            "none";
+
+          errorBox.style.display =
+            "block";
+
+          frameWrap.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        /*
+         * IMPORTANT:
+         * This is the Firebase UID of the
+         * currently logged-in TrustReward user.
+         */
+
+        const userId =
+          user.uid;
+
+
+        /*
+         * PaidBucksy Offerwall URL
+         *
+         * Public Key:
+         * Et8Xn2
+         *
+         * User ID:
+         * Firebase UID
+         */
+
+        const offerUrl =
+          "https://paidbucksy.com/offer/Et8Xn2/" +
+          encodeURIComponent(userId);
+
+
+        frame.src =
+          offerUrl;
+
+
+        loadingBox.style.display =
+          "none";
+
+
+        frameWrap.style.display =
+          "block";
+
+
+      }
+
+    );
+
+  </script>
+
+</body>
+
+</html>

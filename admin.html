@@ -1,0 +1,3899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TrustReward Admin</title>
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+:root{
+--bg:#07070c;
+--sidebar:#0d0d15;
+--card:#11111b;
+--card2:#161621;
+--border:#252536;
+--text:#f5f5fa;
+--muted:#8f8fa3;
+--primary:#7c3aed;
+--primary2:#9b6cff;
+--green:#10b981;
+--red:#ef4444;
+--yellow:#f59e0b;
+--blue:#3b82f6;
+--shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+body{
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Arial,
+sans-serif;
+
+background:
+radial-gradient(circle at top right,rgba(124,58,237,.12),transparent 35%),
+var(--bg);
+
+color:var(--text);
+min-height:100vh;
+}
+
+button,
+input,
+select,
+textarea{
+font-family:inherit;
+}
+
+button{
+cursor:pointer;
+}
+
+.hidden{
+display:none!important;
+}
+
+
+/* =========================
+LOADING
+========================= */
+
+#screen-loading{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.loader{
+text-align:center;
+}
+
+.loader-icon{
+width:70px;
+height:70px;
+margin:auto;
+border-radius:22px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:
+linear-gradient(135deg,var(--primary),#5b21b6);
+
+box-shadow:
+0 15px 40px rgba(124,58,237,.3);
+}
+
+.loader-icon i{
+font-size:30px;
+}
+
+.loader p{
+margin-top:18px;
+color:var(--muted);
+font-size:14px;
+}
+
+
+/* =========================
+LAYOUT
+========================= */
+
+.admin-layout{
+display:flex;
+min-height:100vh;
+}
+
+
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+width:250px;
+background:rgba(13,13,21,.96);
+border-right:1px solid var(--border);
+
+position:fixed;
+left:0;
+top:0;
+bottom:0;
+
+padding:24px 16px;
+
+z-index:100;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:12px;
+
+padding:4px 10px 30px;
+}
+
+.brand-icon{
+width:42px;
+height:42px;
+border-radius:13px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:
+linear-gradient(135deg,var(--primary),#5b21b6);
+
+box-shadow:
+0 8px 25px rgba(124,58,237,.25);
+}
+
+.brand-icon i{
+font-size:18px;
+}
+
+.brand-name{
+font-size:17px;
+font-weight:800;
+}
+
+.brand-small{
+font-size:11px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.nav-title{
+font-size:10px;
+font-weight:700;
+letter-spacing:1.3px;
+text-transform:uppercase;
+color:#5f5f72;
+padding:0 12px;
+margin:10px 0;
+}
+
+.nav-item{
+width:100%;
+display:flex;
+align-items:center;
+gap:12px;
+
+padding:12px 13px;
+margin-bottom:5px;
+
+border-radius:11px;
+border:1px solid transparent;
+
+background:transparent;
+color:var(--muted);
+
+font-size:13px;
+font-weight:600;
+
+transition:.2s;
+}
+
+.nav-item i{
+width:18px;
+text-align:center;
+}
+
+.nav-item:hover{
+background:var(--card);
+color:var(--text);
+border-color:var(--border);
+}
+
+.nav-item.active{
+background:
+linear-gradient(
+135deg,
+rgba(124,58,237,.22),
+rgba(124,58,237,.08)
+);
+
+border-color:rgba(124,58,237,.25);
+color:#c4a7ff;
+}
+
+.sidebar-bottom{
+position:absolute;
+left:16px;
+right:16px;
+bottom:20px;
+}
+
+
+/* =========================
+MAIN
+========================= */
+
+.main{
+margin-left:250px;
+width:calc(100% - 250px);
+min-width:0;
+}
+
+
+/* =========================
+TOPBAR
+========================= */
+
+.topbar{
+height:76px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 30px;
+
+background:rgba(7,7,12,.8);
+border-bottom:1px solid var(--border);
+
+position:sticky;
+top:0;
+z-index:90;
+
+backdrop-filter:blur(15px);
+}
+
+.topbar-title h1{
+font-size:20px;
+font-weight:800;
+}
+
+.topbar-title p{
+font-size:12px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.admin-profile{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.avatar{
+width:38px;
+height:38px;
+
+border-radius:12px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:
+linear-gradient(135deg,var(--primary),#5b21b6);
+
+font-size:14px;
+}
+
+.admin-email{
+font-size:12px;
+color:var(--muted);
+}
+
+.logout-btn{
+height:38px;
+padding:0 13px;
+
+border:1px solid var(--border);
+border-radius:10px;
+
+background:var(--card);
+color:var(--text);
+
+font-size:12px;
+font-weight:700;
+
+transition:.2s;
+}
+
+.logout-btn:hover{
+background:var(--red);
+border-color:var(--red);
+}
+
+
+/* =========================
+CONTENT
+========================= */
+
+.content{
+padding:28px 30px 50px;
+max-width:1500px;
+}
+
+
+/* =========================
+STATS
+========================= */
+
+.stats-grid{
+display:grid;
+grid-template-columns:
+repeat(4,minmax(0,1fr));
+
+gap:15px;
+margin-bottom:22px;
+}
+
+.stat-card{
+position:relative;
+overflow:hidden;
+
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.025),
+rgba(255,255,255,.01)
+),
+var(--card);
+
+border:1px solid var(--border);
+border-radius:17px;
+
+padding:20px;
+
+box-shadow:var(--shadow);
+
+transition:.2s;
+}
+
+.stat-card:hover{
+transform:translateY(-2px);
+border-color:#34344a;
+}
+
+.stat-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:17px;
+}
+
+.stat-icon{
+width:42px;
+height:42px;
+
+border-radius:12px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:16px;
+}
+
+.icon-purple{
+background:rgba(124,58,237,.15);
+color:#a78bfa;
+}
+
+.icon-green{
+background:rgba(16,185,129,.13);
+color:#34d399;
+}
+
+.icon-yellow{
+background:rgba(245,158,11,.13);
+color:#fbbf24;
+}
+
+.icon-blue{
+background:rgba(59,130,246,.13);
+color:#60a5fa;
+}
+
+.icon-red{
+background:rgba(239,68,68,.13);
+color:#f87171;
+}
+
+.stat-label{
+font-size:11px;
+color:var(--muted);
+text-transform:uppercase;
+letter-spacing:.7px;
+font-weight:700;
+}
+
+.stat-value{
+font-size:27px;
+font-weight:800;
+letter-spacing:-.5px;
+}
+
+
+/* =========================
+SECTION
+========================= */
+
+.section{
+background:var(--card);
+
+border:1px solid var(--border);
+border-radius:17px;
+
+padding:22px;
+margin-bottom:18px;
+
+box-shadow:var(--shadow);
+}
+
+.section-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+
+margin-bottom:20px;
+}
+
+.section-title{
+display:flex;
+align-items:center;
+gap:11px;
+}
+
+.section-title-icon{
+width:35px;
+height:35px;
+
+border-radius:10px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(124,58,237,.12);
+color:#a78bfa;
+
+font-size:14px;
+}
+
+.section-title h2{
+font-size:15px;
+font-weight:800;
+}
+
+.section-title p{
+font-size:11px;
+color:var(--muted);
+margin-top:2px;
+}
+
+
+/* =========================
+MAINTENANCE
+========================= */
+
+.maintenance-box{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+
+background:var(--card2);
+border:1px solid var(--border);
+
+border-radius:14px;
+padding:17px;
+}
+
+.maintenance-info{
+display:flex;
+align-items:center;
+gap:13px;
+}
+
+.maintenance-icon{
+width:42px;
+height:42px;
+
+border-radius:12px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(245,158,11,.1);
+color:var(--yellow);
+}
+
+.maintenance-info strong{
+font-size:13px;
+}
+
+.maintenance-info p{
+font-size:11px;
+color:var(--muted);
+margin-top:3px;
+}
+
+.status-text{
+font-size:11px;
+margin-top:7px;
+}
+
+.online{
+color:var(--green);
+}
+
+.offline{
+color:var(--red);
+}
+
+
+/* toggle */
+
+.toggle{
+position:relative;
+width:52px;
+height:29px;
+}
+
+.toggle input{
+display:none;
+}
+
+.toggle-slider{
+position:absolute;
+inset:0;
+
+background:#30303e;
+border-radius:30px;
+
+transition:.25s;
+}
+
+.toggle-slider:before{
+content:"";
+
+position:absolute;
+
+width:21px;
+height:21px;
+
+left:4px;
+top:4px;
+
+border-radius:50%;
+background:#fff;
+
+transition:.25s;
+}
+
+.toggle input:checked + .toggle-slider{
+background:var(--primary);
+}
+
+.toggle input:checked + .toggle-slider:before{
+transform:translateX(23px);
+}
+
+
+/* =========================
+WITHDRAWALS + SUPPORT
+========================= */
+
+.table-wrap{
+width:100%;
+overflow-x:auto;
+}
+
+.table{
+width:100%;
+border-collapse:collapse;
+min-width:760px;
+}
+
+.table th{
+padding:12px 10px;
+
+text-align:left;
+
+font-size:10px;
+text-transform:uppercase;
+letter-spacing:.8px;
+
+color:#6f6f83;
+
+border-bottom:1px solid var(--border);
+}
+
+.table td{
+padding:14px 10px;
+
+border-bottom:1px solid rgba(37,37,54,.7);
+
+font-size:12px;
+vertical-align:middle;
+}
+
+.table tbody tr{
+transition:.15s;
+}
+
+.table tbody tr:hover{
+background:rgba(255,255,255,.018);
+}
+
+.user-cell{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.user-avatar{
+width:34px;
+height:34px;
+
+border-radius:10px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(124,58,237,.13);
+color:#b89aff;
+
+font-size:12px;
+font-weight:800;
+}
+
+.user-name{
+font-weight:700;
+font-size:12px;
+}
+
+.user-email{
+font-size:10px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.amount{
+font-weight:800;
+}
+
+.amount-sub{
+font-size:10px;
+color:var(--muted);
+margin-top:2px;
+}
+
+.badge{
+display:inline-flex;
+align-items:center;
+
+padding:5px 8px;
+
+border-radius:7px;
+
+font-size:9px;
+font-weight:800;
+
+text-transform:uppercase;
+}
+
+.badge-warning{
+background:rgba(245,158,11,.1);
+color:#fbbf24;
+}
+
+.badge-success{
+background:rgba(16,185,129,.1);
+color:#34d399;
+}
+
+.badge-danger{
+background:rgba(239,68,68,.1);
+color:#f87171;
+}
+
+.badge-info{
+background:rgba(59,130,246,.1);
+color:#60a5fa;
+}
+
+.action-buttons{
+display:flex;
+gap:6px;
+}
+
+.btn{
+border:0;
+border-radius:8px;
+
+padding:8px 11px;
+
+font-size:10px;
+font-weight:800;
+
+transition:.2s;
+}
+
+.btn:hover{
+transform:translateY(-1px);
+}
+
+.btn-approve{
+background:rgba(16,185,129,.12);
+color:#34d399;
+}
+
+.btn-approve:hover{
+background:var(--green);
+color:#fff;
+}
+
+.btn-reject{
+background:rgba(239,68,68,.12);
+color:#f87171;
+}
+
+.btn-reject:hover{
+background:var(--red);
+color:#fff;
+}
+
+
+/* =========================
+FORMS
+========================= */
+
+.form-grid{
+display:grid;
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+
+gap:12px;
+}
+
+.input-group{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.input-group label{
+font-size:10px;
+font-weight:700;
+color:var(--muted);
+text-transform:uppercase;
+letter-spacing:.5px;
+}
+
+.input,
+.select,
+.textarea{
+width:100%;
+
+background:#0a0a11;
+border:1px solid var(--border);
+
+color:var(--text);
+
+border-radius:10px;
+
+padding:12px 13px;
+
+font-size:12px;
+
+outline:none;
+
+transition:.2s;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus{
+border-color:var(--primary);
+box-shadow:0 0 0 3px rgba(124,58,237,.08);
+}
+
+.textarea{
+resize:vertical;
+min-height:90px;
+}
+
+.form-full{
+grid-column:1/-1;
+}
+
+.primary-btn{
+border:0;
+
+background:
+linear-gradient(
+135deg,
+var(--primary),
+#6d28d9
+);
+
+color:#fff;
+
+border-radius:10px;
+
+padding:12px 16px;
+
+font-size:12px;
+font-weight:800;
+
+box-shadow:
+0 8px 20px rgba(124,58,237,.18);
+
+transition:.2s;
+}
+
+.primary-btn:hover{
+transform:translateY(-1px);
+box-shadow:
+0 10px 25px rgba(124,58,237,.3);
+}
+
+.message{
+font-size:11px;
+margin-top:10px;
+}
+
+.message.success{
+color:var(--green);
+}
+
+.message.error{
+color:var(--red);
+}
+
+
+/* =========================
+LEADERBOARD
+========================= */
+
+.leader-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.rank{
+width:28px;
+height:28px;
+
+border-radius:9px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:#1b1b27;
+
+font-size:10px;
+font-weight:800;
+color:var(--muted);
+}
+
+.rank.first{
+background:rgba(245,158,11,.12);
+color:#fbbf24;
+}
+
+.rank.second{
+background:rgba(148,163,184,.12);
+color:#cbd5e1;
+}
+
+.rank.third{
+background:rgba(180,83,9,.12);
+color:#fb923c;
+}
+
+.code{
+font-size:10px;
+background:#0a0a11;
+border:1px solid var(--border);
+padding:5px 7px;
+border-radius:6px;
+color:#b9a1ff;
+}
+
+
+/* =========================
+SUPPORT MESSAGES
+========================= */
+
+.support-msg{
+background:var(--card2);
+border:1px solid var(--border);
+border-radius:14px;
+padding:16px;
+margin-bottom:12px;
+}
+
+.support-msg.unread{
+border-left:3px solid var(--blue);
+}
+
+.support-msg-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+.support-msg-user{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.support-msg-content{
+font-size:12px;
+color:var(--muted);
+line-height:1.6;
+}
+
+.support-msg-content strong{
+color:var(--text);
+}
+
+.support-msg-subject{
+font-size:13px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.support-msg-date{
+font-size:10px;
+color:var(--muted);
+}
+
+
+/* =========================
+EMPTY
+========================= */
+
+.empty{
+padding:45px 20px;
+text-align:center;
+color:var(--muted);
+}
+
+.empty-icon{
+width:50px;
+height:50px;
+
+margin:0 auto 12px;
+
+border-radius:15px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:#181822;
+
+font-size:20px;
+color:#555568;
+}
+
+.empty strong{
+display:block;
+color:#b4b4c3;
+font-size:13px;
+margin-bottom:4px;
+}
+
+.empty p{
+font-size:11px;
+}
+
+
+/* =========================
+MOBILE
+========================= */
+
+.mobile-menu{
+display:none;
+}
+
+@media(max-width:1000px){
+
+.sidebar{
+width:215px;
+}
+
+.main{
+margin-left:215px;
+width:calc(100% - 215px);
+}
+
+.stats-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.leader-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:700px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.topbar{
+height:68px;
+padding:0 15px;
+}
+
+.topbar-title h1{
+font-size:17px;
+}
+
+.admin-email{
+display:none;
+}
+
+.mobile-menu{
+display:flex;
+
+width:35px;
+height:35px;
+
+align-items:center;
+justify-content:center;
+
+border:1px solid var(--border);
+border-radius:9px;
+
+background:var(--card);
+color:var(--text);
+}
+
+.content{
+padding:18px 14px 35px;
+}
+
+.stats-grid{
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.stat-card{
+padding:15px;
+border-radius:14px;
+}
+
+.stat-icon{
+width:35px;
+height:35px;
+}
+
+.stat-value{
+font-size:21px;
+}
+
+.stat-label{
+font-size:9px;
+}
+
+.section{
+padding:16px;
+border-radius:14px;
+}
+
+.maintenance-box{
+padding:14px;
+}
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+.form-full{
+grid-column:auto;
+}
+
+.section-title h2{
+font-size:14px;
+}
+
+.logout-btn{
+padding:0 10px;
+font-size:10px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================
+LOADING
+========================= -->
+
+<div id="screen-loading">
+
+<div class="loader">
+
+<div class="loader-icon">
+<i class="fas fa-shield-halved"></i>
+</div>
+
+<p>Verifying administrator...</p>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+ADMIN
+========================= -->
+
+<div id="screen-admin" class="hidden">
+
+<div class="admin-layout">
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="brand">
+
+<div class="brand-icon">
+<i class="fas fa-bolt"></i>
+</div>
+
+<div>
+<div class="brand-name">TrustReward</div>
+<div class="brand-small">Administrator</div>
+</div>
+
+</div>
+
+
+<div class="nav-title">Dashboard</div>
+
+<button class="nav-item active">
+<i class="fas fa-chart-pie"></i>
+Overview
+</button>
+
+<button class="nav-item"
+onclick="scrollToSection('withdrawals-section')">
+<i class="fas fa-wallet"></i>
+Withdrawals
+</button>
+
+<button class="nav-item"
+onclick="scrollToSection('support-section')">
+<i class="fas fa-headset"></i>
+Support Messages
+</button>
+
+<button class="nav-item"
+onclick="scrollToSection('users-section')">
+<i class="fas fa-users"></i>
+Users
+</button>
+
+
+<div class="nav-title">Management</div>
+
+<button class="nav-item"
+onclick="scrollToSection('coins-section')">
+<i class="fas fa-coins"></i>
+Give Coins
+</button>
+
+<button class="nav-item"
+onclick="scrollToSection('notification-section')">
+<i class="fas fa-bell"></i>
+Notifications
+</button>
+
+<button class="nav-item"
+onclick="scrollToSection('leaderboard-section')">
+<i class="fas fa-trophy"></i>
+Leaderboards
+</button>
+
+
+<div class="nav-title">System</div>
+
+<button class="nav-item"
+onclick="scrollToSection('maintenance-section')">
+<i class="fas fa-sliders"></i>
+Settings
+</button>
+
+
+<div class="sidebar-bottom">
+
+<button
+class="nav-item"
+onclick="handleLogout()">
+
+<i class="fas fa-right-from-bracket"></i>
+Logout
+
+</button>
+
+</div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+<div style="display:flex;align-items:center;gap:12px;">
+
+<button
+class="mobile-menu"
+onclick="toggleMobileMenu()">
+
+<i class="fas fa-bars"></i>
+
+</button>
+
+<div class="topbar-title">
+
+<h1>Admin Dashboard</h1>
+<p>Manage your TrustReward platform</p>
+
+</div>
+
+</div>
+
+
+<div class="admin-profile">
+
+<div class="avatar">
+<i class="fas fa-user-shield"></i>
+</div>
+
+<div class="admin-email">
+georgesundaylikitaadmin@gmail.com
+</div>
+
+<button
+class="logout-btn"
+onclick="handleLogout()">
+
+<i class="fas fa-right-from-bracket"></i>
+
+<span> Logout</span>
+
+</button>
+
+</div>
+
+</header>
+
+
+<!-- CONTENT -->
+
+<main class="content">
+
+
+<!-- STATS -->
+
+<div class="stats-grid">
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<div class="stat-label">
+Total Users
+</div>
+
+<div class="stat-icon icon-purple">
+<i class="fas fa-users"></i>
+</div>
+
+</div>
+
+<div
+class="stat-value"
+id="stat-users">
+0
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<div class="stat-label">
+Coins In System
+</div>
+
+<div class="stat-icon icon-yellow">
+<i class="fas fa-coins"></i>
+</div>
+
+</div>
+
+<div
+class="stat-value"
+id="stat-coins">
+0
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<div class="stat-label">
+Coins Withdrawn
+</div>
+
+<div class="stat-icon icon-green">
+<i class="fas fa-money-bill-transfer"></i>
+</div>
+
+</div>
+
+<div
+class="stat-value"
+id="stat-withdrawn">
+0
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-top">
+
+<div class="stat-label">
+Pending
+</div>
+
+<div class="stat-icon icon-blue">
+<i class="fas fa-clock"></i>
+</div>
+
+</div>
+
+<div
+class="stat-value"
+id="stat-pending">
+0
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- MAINTENANCE -->
+
+<section
+class="section"
+id="maintenance-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-power-off"></i>
+</div>
+
+<div>
+
+<h2>Maintenance Mode</h2>
+
+<p>Control whether users can access the platform</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="maintenance-box">
+
+<div class="maintenance-info">
+
+<div class="maintenance-icon">
+<i class="fas fa-server"></i>
+</div>
+
+<div>
+
+<strong>System Status</strong>
+
+<p>
+Turn maintenance mode on when you need to temporarily close the app.
+</p>
+
+<div
+id="maintenance-status"
+class="status-text online">
+
+Checking status...
+
+</div>
+
+</div>
+
+</div>
+
+
+<label class="toggle">
+
+<input
+type="checkbox"
+id="maintenance-toggle"
+onchange="toggleMaintenance(this.checked)"
+>
+
+<span class="toggle-slider"></span>
+
+</label>
+
+</div>
+
+</section>
+
+
+<!-- WITHDRAWALS -->
+
+<section
+class="section"
+id="withdrawals-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-wallet"></i>
+</div>
+
+<div>
+
+<h2>Pending Withdrawals</h2>
+
+<p>Review and process user withdrawal requests</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="withdrawals-list">
+
+<div class="empty">
+
+<div class="empty-icon">
+<i class="fas fa-spinner fa-spin"></i>
+</div>
+
+<strong>Loading withdrawals</strong>
+
+<p>Please wait...</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SUPPORT MESSAGES -->
+
+<section
+class="section"
+id="support-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-headset"></i>
+</div>
+
+<div>
+
+<h2>Support Messages</h2>
+
+<p>Messages from users via the Help Center</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="support-list">
+
+<div class="empty">
+
+<div class="empty-icon">
+<i class="fas fa-spinner fa-spin"></i>
+</div>
+
+<strong>Loading messages</strong>
+
+<p>Please wait...</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- GIVE COINS -->
+
+<section
+class="section"
+id="coins-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-gift"></i>
+</div>
+
+<div>
+
+<h2>Give Coins</h2>
+
+<p>Send coins directly to a user account</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>User ID</label>
+
+<input
+class="input"
+id="giveaway-uid"
+placeholder="Enter user ID"
+>
+
+</div>
+
+
+<div class="input-group">
+
+<label>Coins</label>
+
+<input
+class="input"
+type="number"
+id="giveaway-amount"
+placeholder="Enter amount"
+>
+
+</div>
+
+
+<div class="input-group form-full">
+
+<label>Reason</label>
+
+<input
+class="input"
+id="giveaway-reason"
+placeholder="Example: Welcome bonus"
+>
+
+</div>
+
+
+<div class="form-full">
+
+<button
+class="primary-btn"
+onclick="giveAwayCoins()">
+
+<i class="fas fa-paper-plane"></i>
+Send Coins
+
+</button>
+
+</div>
+
+</div>
+
+
+<p
+id="giveaway-msg"
+class="message hidden">
+</p>
+
+</section>
+
+
+<!-- NOTIFICATION -->
+
+<section
+class="section"
+id="notification-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-bell"></i>
+</div>
+
+<div>
+
+<h2>Notifications</h2>
+
+<p>Send announcements or private messages</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-grid">
+
+<div class="input-group">
+
+<label>Send To</label>
+
+<select
+class="select"
+id="notif-target">
+
+<option value="all">
+All Users
+</option>
+
+<option value="user">
+Single User
+</option>
+
+</select>
+
+</div>
+
+
+<div
+class="input-group"
+id="notif-user-box"
+style="display:none;">
+
+<label>User ID</label>
+
+<input
+class="input"
+id="notif-uid"
+placeholder="Enter user ID"
+>
+
+</div>
+
+
+<div class="input-group form-full">
+
+<label>Title</label>
+
+<input
+class="input"
+id="notif-title"
+placeholder="Notification title"
+>
+
+</div>
+
+
+<div class="input-group form-full">
+
+<label>Message</label>
+
+<textarea
+class="textarea"
+id="notif-msg"
+placeholder="Write your message..."
+></textarea>
+
+</div>
+
+
+<div class="form-full">
+
+<button
+class="primary-btn"
+onclick="sendNotification()">
+
+<i class="fas fa-bullhorn"></i>
+Send Notification
+
+</button>
+
+</div>
+
+</div>
+
+
+<p
+id="notif-result"
+class="message hidden">
+</p>
+
+</section>
+
+
+<!-- LEADERBOARDS -->
+
+<section
+class="section"
+id="leaderboard-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-trophy"></i>
+</div>
+
+<div>
+
+<h2>Leaderboards</h2>
+
+<p>Top performing members on TrustReward</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="leader-grid">
+
+
+<!-- TOP EARNERS -->
+
+<div>
+
+<div
+style="
+font-size:12px;
+font-weight:800;
+margin-bottom:12px;
+">
+
+🏆 Top Earners
+
+</div>
+
+
+<div class="table-wrap">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+<th>User</th>
+<th>Earned</th>
+<th>Balance</th>
+
+</tr>
+
+</thead>
+
+<tbody id="top-earners">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- TOP REFERRERS -->
+
+<div>
+
+<div
+style="
+font-size:12px;
+font-weight:800;
+margin-bottom:12px;
+">
+
+🤝 Top Referrers
+
+</div>
+
+
+<div class="table-wrap">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+<th>User</th>
+<th>Referrals</th>
+<th>Code</th>
+
+</tr>
+
+</thead>
+
+<tbody id="top-referrals">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- USERS -->
+
+<section
+class="section"
+id="users-section">
+
+<div class="section-head">
+
+<div class="section-title">
+
+<div class="section-title-icon">
+<i class="fas fa-circle-info"></i>
+</div>
+
+<div>
+
+<h2>Admin Information</h2>
+
+<p>TrustReward administration details</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(200px,1fr));
+gap:12px;
+">
+
+<div
+style="
+background:var(--card2);
+border:1px solid var(--border);
+padding:15px;
+border-radius:12px;
+">
+
+<div
+style="
+font-size:10px;
+color:var(--muted);
+text-transform:uppercase;
+font-weight:700;
+">
+
+Admin Email
+
+</div>
+
+<div
+style="
+font-size:12px;
+font-weight:700;
+margin-top:6px;
+">
+
+trustreward39@gmail.com
+
+</div>
+
+</div>
+
+
+<div
+style="
+background:var(--card2);
+border:1px solid var(--border);
+padding:15px;
+border-radius:12px;
+">
+
+<div
+style="
+font-size:10px;
+color:var(--muted);
+text-transform:uppercase;
+font-weight:700;
+">
+
+Currency
+
+</div>
+
+<div
+style="
+font-size:12px;
+font-weight:700;
+margin-top:6px;
+">
+
+Coins
+
+</div>
+
+</div>
+
+
+<div
+style="
+background:var(--card2);
+border:1px solid var(--border);
+padding:15px;
+border-radius:12px;
+">
+
+<div
+style="
+font-size:10px;
+color:var(--muted);
+text-transform:uppercase;
+font-weight:700;
+">
+
+Platform
+
+</div>
+
+<div
+style="
+font-size:12px;
+font-weight:700;
+margin-top:6px;
+">
+
+TrustReward
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+import {
+getDatabase,
+ref,
+get,
+set,
+update,
+onValue,
+query,
+orderByChild,
+limitToLast,
+push
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+
+/* =========================
+FIREBASE CONFIG
+>>> REPLACE apiKey AND ADMIN_UID WITH YOUR REAL VALUES <<<
+========================= */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyCzZIrEyMnuvDPPqXl6m1ODxacEFfKyWxI",
+
+authDomain:
+"trustreward-19165.firebaseapp.com",
+
+databaseURL:
+"https://trustreward-19165-default-rtdb.firebaseio.com",
+
+projectId:
+"trustreward-19165",
+
+storageBucket:
+"trustreward-19165.firebasestorage.app",
+
+messagingSenderId:
+"156070844909",
+
+appId:
+"1:156070844909:web:8625342638350641ffafe4"
+
+};
+
+
+const ADMIN_UID =
+"PASTE_YOUR_ADMIN_UID_HERE";
+
+const ADMIN_EMAIL =
+"trustreward39@gmail.com";
+
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getDatabase(app);
+
+
+/* =========================
+AUTH
+========================= */
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(
+!user ||
+(
+user.uid !== ADMIN_UID &&
+user.email !== ADMIN_EMAIL
+)
+){
+
+alert("Access denied. Admin only.");
+
+window.location.href="./index.html";
+
+return;
+
+}
+
+
+document
+.getElementById("screen-loading")
+.classList.add("hidden");
+
+
+document
+.getElementById("screen-admin")
+.classList.remove("hidden");
+
+
+initAdmin();
+
+}
+);
+
+
+/* =========================
+INIT
+========================= */
+
+function initAdmin(){
+
+loadStats();
+
+loadMaintenance();
+
+loadWithdrawals();
+
+loadSupportMessages();
+
+loadTopEarners();
+
+loadTopReferrals();
+
+
+document
+.getElementById("notif-target")
+.addEventListener(
+"change",
+(e)=>{
+
+document
+.getElementById("notif-user-box")
+.style.display =
+e.target.value === "user"
+? "flex"
+: "none";
+
+}
+);
+
+}
+
+
+/* =========================
+STATS
+========================= */
+
+async function loadStats(){
+
+try{
+
+const usersSnap =
+await get(ref(db,"users"));
+
+let totalUsers=0;
+let totalCoins=0;
+let totalWithdrawn=0;
+
+
+if(usersSnap.exists()){
+
+usersSnap.forEach(child=>{
+
+const user =
+child.val();
+
+totalUsers++;
+
+totalCoins +=
+Number(user.coins)||0;
+
+});
+
+}
+
+
+const wdSnap =
+await get(ref(db,"withdrawals"));
+
+let pending=0;
+
+
+if(wdSnap.exists()){
+
+wdSnap.forEach(child=>{
+
+const wd =
+child.val();
+
+if(
+wd.status === "approved"
+){
+
+totalWithdrawn +=
+Number(wd.coins)||0;
+
+}
+
+if(
+wd.status === "pending"
+){
+
+pending++;
+
+}
+
+});
+
+}
+
+
+document
+.getElementById("stat-users")
+.textContent =
+totalUsers.toLocaleString();
+
+
+document
+.getElementById("stat-coins")
+.textContent =
+totalCoins.toLocaleString();
+
+
+document
+.getElementById("stat-withdrawn")
+.textContent =
+totalWithdrawn.toLocaleString();
+
+
+document
+.getElementById("stat-pending")
+.textContent =
+pending.toLocaleString();
+
+}
+catch(error){
+
+console.error(error);
+
+}
+
+}
+
+
+/* =========================
+MAINTENANCE
+========================= */
+
+async function loadMaintenance(){
+
+const snap =
+await get(
+ref(db,"settings/maintenance")
+);
+
+const isOn =
+snap.val() === true;
+
+
+document
+.getElementById("maintenance-toggle")
+.checked =
+isOn;
+
+
+setMaintenanceText(isOn);
+
+}
+
+
+function setMaintenanceText(isOn){
+
+const el =
+document.getElementById(
+"maintenance-status"
+);
+
+if(isOn){
+
+el.textContent =
+"● App is currently OFFLINE";
+
+el.className =
+"status-text offline";
+
+}else{
+
+el.textContent =
+"● App is currently ONLINE";
+
+el.className =
+"status-text online";
+
+}
+
+}
+
+
+window.toggleMaintenance =
+async function(isOn){
+
+await set(
+ref(db,"settings/maintenance"),
+isOn
+);
+
+setMaintenanceText(isOn);
+
+};
+
+
+/* =========================
+WITHDRAWALS
+========================= */
+
+function loadWithdrawals(){
+
+onValue(
+ref(db,"withdrawals"),
+(snap)=>{
+
+const container =
+document.getElementById(
+"withdrawals-list"
+);
+
+
+if(!snap.exists()){
+
+showEmpty(
+container,
+"fa-inbox",
+"No withdrawals",
+"There are no withdrawal requests yet."
+);
+
+return;
+
+}
+
+
+const items=[];
+
+
+snap.forEach(child=>{
+
+const value =
+child.val();
+
+if(
+value.status === "pending"
+){
+
+items.unshift({
+
+id:child.key,
+...value
+
+});
+
+}
+
+});
+
+
+if(items.length===0){
+
+showEmpty(
+container,
+"fa-circle-check",
+"All caught up",
+"There are no pending withdrawals."
+);
+
+return;
+
+}
+
+
+let html=`
+
+<div class="table-wrap">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>User</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Details</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+`;
+
+
+items.forEach(wd=>{
+
+const displayName =
+wd.displayName ||
+"User";
+
+
+const initials =
+displayName
+.substring(0,2)
+.toUpperCase();
+
+
+let details="";
+
+
+if(
+wd.type === "bank"
+){
+
+details =
+`${wd.country || ""}<br>${wd.bankName || ""}<br>${wd.accountNumber || ""}<br>${wd.accountName || ""}`;
+
+}
+
+else if(
+wd.type === "airtime"
+){
+
+details =
+`${wd.country || ""}<br>${wd.phone || ""}`;
+
+}
+
+
+const coins =
+Number(wd.coins)||0;
+
+
+html+=`
+
+<tr>
+
+<td>
+
+<div class="user-cell">
+
+<div class="user-avatar">
+${escapeHtml(initials)}
+</div>
+
+<div>
+
+<div class="user-name">
+${escapeHtml(displayName)}
+</div>
+
+<div class="user-email">
+${escapeHtml(wd.email || "")}
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+
+<td>
+
+<span class="badge badge-warning">
+${escapeHtml(wd.type || "unknown")}
+</span>
+
+</td>
+
+
+<td>
+
+<div class="amount">
+${coins.toLocaleString()} coins
+</div>
+
+</td>
+
+
+<td>
+
+<div style="
+font-size:11px;
+line-height:1.7;
+color:var(--muted);
+">
+
+${details}
+
+</div>
+
+</td>
+
+
+<td>
+
+<div class="action-buttons">
+
+<button
+class="btn btn-approve"
+onclick="approveWD(
+'${escapeAttr(wd.id)}',
+'${escapeAttr(wd.uid)}',
+${coins}
+)">
+
+<i class="fas fa-check"></i>
+Approve
+
+</button>
+
+
+<button
+class="btn btn-reject"
+onclick="rejectWD(
+'${escapeAttr(wd.id)}',
+'${escapeAttr(wd.uid)}',
+${coins}
+)">
+
+<i class="fas fa-xmark"></i>
+Reject
+
+</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+
+html+=`
+
+</tbody>
+
+</table>
+
+</div>
+
+`;
+
+
+container.innerHTML =
+html;
+
+}
+
+);
+
+}
+
+
+/* =========================
+APPROVE
+========================= */
+
+window.approveWD =
+async function(
+wdId,
+uid,
+coins
+){
+
+if(
+!confirm(
+"Approve this withdrawal?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+await update(
+ref(db,
+`withdrawals/${wdId}`
+),
+{
+
+status:"approved",
+
+approvedAt:
+Date.now()
+
+}
+);
+
+
+await push(
+ref(db,
+`notifications/${uid}`
+),
+{
+
+type:"success",
+
+title:
+"Withdrawal Approved",
+
+message:
+`Your withdrawal of ${coins.toLocaleString()} coins has been approved.`,
+
+icon:"success",
+
+read:false,
+
+timestamp:Date.now()
+
+}
+);
+
+
+await loadStats();
+
+
+}
+catch(error){
+
+alert(
+"Could not approve withdrawal."
+);
+
+console.error(error);
+
+}
+
+};
+
+
+/* =========================
+REJECT
+========================= */
+
+window.rejectWD =
+async function(
+wdId,
+uid,
+coins
+){
+
+if(
+!confirm(
+"Reject this withdrawal and refund the coins?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+await update(
+ref(db,
+`withdrawals/${wdId}`
+),
+{
+
+status:"rejected",
+
+rejectedAt:
+Date.now()
+
+}
+);
+
+
+const userSnap =
+await get(
+ref(db,`users/${uid}`)
+);
+
+
+if(userSnap.exists()){
+
+const user =
+userSnap.val();
+
+
+await update(
+ref(db,`users/${uid}`),
+{
+
+coins:
+(Number(user.coins)||0)
++
+Number(coins),
+
+}
+
+);
+
+}
+
+
+await push(
+ref(db,
+`notifications/${uid}`
+),
+{
+
+type:"danger",
+
+title:
+"Withdrawal Rejected",
+
+message:
+`Your withdrawal was rejected. ${coins.toLocaleString()} coins have been refunded.`,
+
+icon:"danger",
+
+read:false,
+
+timestamp:Date.now()
+
+}
+);
+
+
+await loadStats();
+
+
+}
+catch(error){
+
+alert(
+"Could not reject withdrawal."
+);
+
+console.error(error);
+
+}
+
+};
+
+
+/* =========================
+SUPPORT MESSAGES
+========================= */
+
+function loadSupportMessages(){
+
+onValue(
+ref(db,"supportMessages"),
+(snap)=>{
+
+const container =
+document.getElementById(
+"support-list"
+);
+
+
+if(!snap.exists()){
+
+showEmpty(
+container,
+"fa-inbox",
+"No messages",
+"User support messages will appear here."
+);
+
+return;
+
+}
+
+
+const items=[];
+
+
+snap.forEach(child=>{
+
+items.push({
+
+id:child.key,
+...child.val()
+
+});
+
+});
+
+
+items.sort(
+(a,b)=>
+Number(b.createdAt||0) -
+Number(a.createdAt||0)
+);
+
+
+let html="";
+
+
+items.forEach(msg=>{
+
+const displayName =
+msg.displayName ||
+"User";
+
+
+const initials =
+displayName
+.substring(0,2)
+.toUpperCase();
+
+
+const isUnread =
+msg.status === "unread";
+
+
+const dateStr =
+msg.createdAt
+? new Date(msg.createdAt).toLocaleString()
+: "";
+
+
+html+=`
+
+<div class="support-msg${isUnread ? " unread" : ""}">
+
+<div class="support-msg-header">
+
+<div class="support-msg-user">
+
+<div class="user-avatar">
+${escapeHtml(initials)}
+</div>
+
+<div>
+
+<div class="user-name">
+${escapeHtml(displayName)}
+</div>
+
+<div class="user-email">
+${escapeHtml(msg.email || "")}
+</div>
+
+</div>
+
+</div>
+
+
+<div>
+
+<span class="badge ${isUnread ? "badge-info" : "badge-success"}">
+${isUnread ? "Unread" : "Read"}
+</span>
+
+<div class="support-msg-date" style="margin-top:5px;">
+${escapeHtml(dateStr)}
+</div>
+
+</div>
+
+</div>
+
+
+<div class="support-msg-subject">
+${escapeHtml(msg.subject || "No subject")}
+</div>
+
+
+<div class="support-msg-content">
+${escapeHtml(msg.message || "")}
+</div>
+
+
+<div style="margin-top:10px;display:flex;gap:6px;">
+
+<button
+class="btn btn-approve"
+onclick="markSupportRead('${escapeAttr(msg.id)}')">
+
+<i class="fas fa-check"></i>
+Mark Read
+
+</button>
+
+<button
+class="btn btn-reject"
+onclick="deleteSupportMsg('${escapeAttr(msg.id)}')">
+
+<i class="fas fa-trash"></i>
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+container.innerHTML =
+html;
+
+},
+(error)=>{
+
+console.error("SUPPORT LOAD ERROR:", error);
+
+showEmpty(
+document.getElementById("support-list"),
+"fa-triangle-exclamation",
+"Error loading messages",
+"Check your Firebase Database Rules."
+);
+
+}
+
+);
+
+}
+
+
+window.markSupportRead =
+async function(msgId){
+
+try{
+
+await update(
+ref(db,`supportMessages/${msgId}`),
+{
+status:"read",
+readAt:Date.now()
+}
+);
+
+}
+catch(error){
+
+console.error(error);
+
+}
+
+};
+
+
+window.deleteSupportMsg =
+async function(msgId){
+
+if(!confirm("Delete this message?")) return;
+
+try{
+
+await set(
+ref(db,`supportMessages/${msgId}`),
+null
+);
+
+}
+catch(error){
+
+console.error(error);
+
+}
+
+};
+
+
+/* =========================
+GIVE COINS
+========================= */
+
+window.giveAwayCoins =
+async function(){
+
+const uid =
+document
+.getElementById("giveaway-uid")
+.value
+.trim();
+
+
+const amount =
+parseInt(
+document
+.getElementById("giveaway-amount")
+.value
+)||0;
+
+
+const reason =
+document
+.getElementById("giveaway-reason")
+.value
+.trim()
+||
+"Admin bonus";
+
+
+const msg =
+document
+.getElementById("giveaway-msg");
+
+
+msg.className =
+"message hidden";
+
+
+if(
+!uid ||
+amount<=0
+){
+
+showMessage(
+msg,
+"Enter a valid User ID and coin amount.",
+"error"
+);
+
+return;
+
+}
+
+
+try{
+
+const userSnap =
+await get(
+ref(db,`users/${uid}`)
+);
+
+
+if(!userSnap.exists()){
+
+showMessage(
+msg,
+"User not found.",
+"error"
+);
+
+return;
+
+}
+
+
+const user =
+userSnap.val();
+
+
+await update(
+ref(db,`users/${uid}`),
+{
+
+coins:
+(Number(user.coins)||0)
++
+amount,
+
+totalEarned:
+(Number(user.totalEarned)||0)
++
+amount
+
+}
+);
+
+
+await push(
+ref(db,`transactions/${uid}`),
+{
+
+type:"earn",
+
+amount:amount,
+
+description:reason,
+
+timestamp:Date.now()
+
+}
+);
+
+
+await push(
+ref(db,`notifications/${uid}`),
+{
+
+type:"success",
+
+title:
+"You received coins!",
+
+message:
+`Admin sent you ${amount.toLocaleString()} coins. Reason: ${reason}`,
+
+icon:"success",
+
+read:false,
+
+timestamp:Date.now()
+
+}
+);
+
+
+showMessage(
+msg,
+`Successfully sent ${amount.toLocaleString()} coins to ${user.displayName || "user"}.`,
+"success"
+);
+
+
+document
+.getElementById("giveaway-uid")
+.value="";
+
+
+document
+.getElementById("giveaway-amount")
+.value="";
+
+
+document
+.getElementById("giveaway-reason")
+.value="";
+
+
+loadStats();
+
+}
+catch(error){
+
+console.error(error);
+
+showMessage(
+msg,
+"Something went wrong.",
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+NOTIFICATION
+========================= */
+
+window.sendNotification =
+async function(){
+
+const target =
+document
+.getElementById("notif-target")
+.value;
+
+
+const uid =
+document
+.getElementById("notif-uid")
+.value
+.trim();
+
+
+const title =
+document
+.getElementById("notif-title")
+.value
+.trim();
+
+
+const message =
+document
+.getElementById("notif-msg")
+.value
+.trim();
+
+
+const result =
+document
+.getElementById("notif-result");
+
+
+result.className =
+"message hidden";
+
+
+if(
+!title ||
+!message
+){
+
+showMessage(
+result,
+"Title and message are required.",
+"error"
+);
+
+return;
+
+}
+
+
+const notification={
+
+type:"info",
+
+title:title,
+
+message:message,
+
+icon:"info",
+
+read:false,
+
+timestamp:Date.now()
+
+};
+
+
+try{
+
+if(
+target === "user"
+){
+
+if(!uid){
+
+showMessage(
+result,
+"Enter a User ID.",
+"error"
+);
+
+return;
+
+}
+
+
+const userSnap =
+await get(
+ref(db,`users/${uid}`)
+);
+
+
+if(!userSnap.exists()){
+
+showMessage(
+result,
+"User not found.",
+"error"
+);
+
+return;
+
+}
+
+
+await push(
+ref(db,`notifications/${uid}`),
+notification
+);
+
+
+showMessage(
+result,
+"Notification sent successfully.",
+"success"
+);
+
+}
+else{
+
+const usersSnap =
+await get(
+ref(db,"users")
+);
+
+
+let count=0;
+
+const promises=[];
+
+
+if(usersSnap.exists()){
+
+usersSnap.forEach(child=>{
+
+promises.push(
+
+push(
+ref(db,
+`notifications/${child.key}`
+),
+notification
+)
+
+);
+
+count++;
+
+});
+
+}
+
+
+await Promise.all(promises);
+
+
+showMessage(
+result,
+`Notification sent to ${count} users.`,
+"success"
+);
+
+}
+
+
+document
+.getElementById("notif-title")
+.value="";
+
+
+document
+.getElementById("notif-msg")
+.value="";
+
+
+document
+.getElementById("notif-uid")
+.value="";
+
+}
+catch(error){
+
+console.error(error);
+
+showMessage(
+result,
+"Unable to send notification.",
+"error"
+);
+
+}
+
+};
+
+
+/* =========================
+TOP EARNERS
+========================= */
+
+async function loadTopEarners(){
+
+const tbody =
+document.getElementById(
+"top-earners"
+);
+
+
+const snap =
+await get(
+
+query(
+ref(db,"users"),
+
+orderByChild(
+"totalEarned"
+),
+
+limitToLast(10)
+
+)
+
+);
+
+
+if(!snap.exists()){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="4">
+
+<div class="empty">
+
+<div class="empty-icon">
+<i class="fas fa-users"></i>
+</div>
+
+<strong>No users yet</strong>
+<p>Leaderboard will appear here.</p>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+const users=[];
+
+
+snap.forEach(child=>{
+
+users.push(
+child.val()
+);
+
+});
+
+
+users.sort(
+(a,b)=>
+(Number(b.totalEarned)||0)
+-
+(Number(a.totalEarned)||0)
+);
+
+
+tbody.innerHTML =
+users.map(
+(u,i)=>{
+
+const rankClass =
+i===0
+? "first"
+: i===1
+? "second"
+: i===2
+? "third"
+: "";
+
+
+const initials =
+(u.displayName||"U")
+.substring(0,2)
+.toUpperCase();
+
+
+return `
+
+<tr>
+
+<td>
+
+<div class="rank ${rankClass}">
+${i+1}
+</div>
+
+</td>
+
+<td>
+
+<div class="user-cell">
+
+<div class="user-avatar">
+${escapeHtml(initials)}
+</div>
+
+<div>
+
+<div class="user-name">
+${escapeHtml(u.displayName || "User")}
+</div>
+
+<div class="user-email">
+${escapeHtml(u.email || "")}
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+<td>
+
+<strong>
+${(Number(u.totalEarned)||0).toLocaleString()}
+</strong>
+
+</td>
+
+<td>
+
+${(Number(u.coins)||0).toLocaleString()}
+
+</td>
+
+</tr>
+
+`;
+
+}
+).join("");
+
+}
+
+
+/* =========================
+TOP REFERRERS
+========================= */
+
+async function loadTopReferrals(){
+
+const tbody =
+document.getElementById(
+"top-referrals"
+);
+
+
+const snap =
+await get(
+
+query(
+ref(db,"users"),
+
+orderByChild(
+"referralCount"
+),
+
+limitToLast(10)
+
+)
+
+);
+
+
+if(!snap.exists()){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="4">
+
+<div class="empty">
+
+<div class="empty-icon">
+<i class="fas fa-user-plus"></i>
+</div>
+
+<strong>No referrals yet</strong>
+<p>Referral rankings will appear here.</p>
+
+</div>
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+const users=[];
+
+
+snap.forEach(child=>{
+
+users.push(
+child.val()
+);
+
+});
+
+
+users.sort(
+(a,b)=>
+(Number(b.referralCount)||0)
+-
+(Number(a.referralCount)||0)
+);
+
+
+tbody.innerHTML =
+users.map(
+(u,i)=>{
+
+const rankClass =
+i===0
+? "first"
+: i===1
+? "second"
+: i===2
+? "third"
+: "";
+
+
+const initials =
+(u.displayName||"U")
+.substring(0,2)
+.toUpperCase();
+
+
+return `
+
+<tr>
+
+<td>
+
+<div class="rank ${rankClass}">
+${i+1}
+</div>
+
+</td>
+
+<td>
+
+<div class="user-cell">
+
+<div class="user-avatar">
+${escapeHtml(initials)}
+</div>
+
+<div>
+
+<div class="user-name">
+${escapeHtml(u.displayName || "User")}
+</div>
+
+<div class="user-email">
+${escapeHtml(u.email || "")}
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+<td>
+
+<strong>
+${Number(u.referralCount)||0}
+</strong>
+
+</td>
+
+<td>
+
+<span class="code">
+${escapeHtml(u.referralCode || "N/A")}
+</span>
+
+</td>
+
+</tr>
+
+`;
+
+}
+).join("");
+
+}
+
+
+/* =========================
+HELPERS
+========================= */
+
+function showEmpty(
+container,
+icon,
+title,
+description
+){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">
+
+<i class="fas ${icon}"></i>
+
+</div>
+
+<strong>${title}</strong>
+<p>${description}</p>
+
+</div>
+
+`;
+
+}
+
+
+function showMessage(
+element,
+message,
+type
+){
+
+element.textContent =
+message;
+
+element.className =
+`message ${type}`;
+
+}
+
+
+function escapeHtml(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttr(value){
+
+return String(value)
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'");
+
+}
+
+
+window.scrollToSection =
+function(id){
+
+const element =
+document.getElementById(id);
+
+if(element){
+
+element.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+};
+
+
+window.toggleMobileMenu =
+function(){
+
+alert(
+"Use the dashboard sections below to manage TrustReward."
+);
+
+};
+
+
+window.handleLogout =
+async function(){
+
+await signOut(auth);
+
+window.location.href =
+"./index.html";
+
+};
+
+</script>
+
+</body>
+</html>
+<script src="https://pl30578596.effectivecpmnetwork.com/7a/b4/9d/7ab49d65b9e0560f65c28caaf8ca4776.js"></script>

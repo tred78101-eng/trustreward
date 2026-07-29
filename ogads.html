@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Earn Rewards - TrustReward</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+    .container { max-width: 500px; margin: 30px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #333; }
+    .btn { display: block; padding: 16px; text-decoration: none; border-radius: 8px; 
+           font-size: 18px; font-weight: bold; margin: 15px 0; text-align: center; }
+    .btn-main { background: #4CAF50; color: white; }
+    .btn-locker { background: #FF6B00; color: white; }
+    .userid { color: #666; font-size: 12px; text-align: center; margin-top: 20px; word-break: break-all; }
+    .desc { color: #666; font-size: 14px; text-align: center; margin: 5px 0 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💰 Complete Offers to Earn</h1>
+    <div id="offers"></div>
+  </div>
+
+  <script>
+    // Create/save user ID for tracking
+    let userId = localStorage.getItem('trustreward_userid');
+    if (!userId) {
+      userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+      localStorage.setItem('trustreward_userid', userId);
+    }
+
+    // Your OGAds links + user tracking
+    let smartLink = 'https://appsave.store/sl/2gejr?subid=' + userId;
+    let lockerLink = 'https://appsave.store/cl/i/o4ek1q?subid=' + userId;
+    
+    document.getElementById('offers').innerHTML = `
+      <a href="${smartLink}" class="btn btn-main" target="_blank">
+        View All Available Offers
+      </a>
+      <div class="desc">Browse all offers and choose what to complete</div>
+      
+      <a href="${lockerLink}" class="btn btn-locker" target="_blank">
+        🎁 Unlock Bonus Rewards
+      </a>
+      <div class="desc">Complete 1 offer to unlock special rewards</div>
+      
+      <div class="userid">Your User ID: ${userId}</div>
+    `;
+  </script>
+</body>
+</html>

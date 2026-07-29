@@ -1,0 +1,14 @@
+{
+  "name": "trustreward-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "hono": "^4.7.7"
+  }
+}

@@ -1,0 +1,533 @@
+<!DOCTYPE html><html lang="en">
+<head>  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+«»
+
+  <title>Earn Rewards - TrustReward</title>  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    .header {
+      background: white;
+      padding: 24px 20px;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    .offers {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .offer {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+
+    .offer-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .offer-name {
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 1.3;
+    }
+
+    .reward {
+      white-space: nowrap;
+      font-weight: bold;
+      color: #16803c;
+      font-size: 15px;
+    }
+
+    .description {
+      color: #666;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 10px 0 15px;
+    }
+
+    .offer-button {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 10px;
+      background: #4CAF50;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .offer-button:hover {
+      opacity: 0.9;
+    }
+
+    .loading {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      color: #777;
+    }
+
+    .empty {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .empty h3 {
+      margin-top: 0;
+    }
+
+    .empty p {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .userid {
+      margin-top: 20px;
+      text-align: center;
+      color: #999;
+      font-size: 11px;
+      word-break: break-all;
+    }
+
+  </style></head><body>  <div class="container"><div class="header">
+
+  <h1>💰 Earn Rewards</h1>
+
+  <p>
+    Complete available offers and earn coins.
+    Offers are automatically matched to your device and location.
+  </p>
+
+  <div
+    id="status"
+    class="status"
+  >
+    Loading available offers...
+  </div>
+
+</div>
+
+
+<div
+  id="offers"
+  class="offers"
+>
+
+  <div class="loading">
+    🔄 Finding available offers...
+  </div>
+
+</div>
+
+
+<div
+  id="userid"
+  class="userid"
+></div>
+
+  </div>  <script>
+
+    // =================================================
+    // USER ID
+    // =================================================
+
+    let userId =
+      localStorage.getItem(
+        "trustreward_userid"
+      );
+
+
+    if (!userId) {
+
+      userId =
+        "user_" +
+        Date.now() +
+        "_" +
+        Math.random()
+          .toString(36)
+          .substring(2, 8);
+
+      localStorage.setItem(
+        "trustreward_userid",
+        userId
+      );
+
+    }
+
+
+    document.getElementById(
+      "userid"
+    ).textContent =
+      "User ID: " + userId;
+
+
+    // =================================================
+    // ELEMENTS
+    // =================================================
+
+    const offersContainer =
+      document.getElementById(
+        "offers"
+      );
+
+
+    const statusElement =
+      document.getElementById(
+        "status"
+      );
+
+
+    // =================================================
+    // LOAD OGADS OFFERS
+    // =================================================
+
+    async function loadOGAdsOffers() {
+
+      try {
+
+        statusElement.textContent =
+          "Loading available offers...";
+
+
+        const response =
+          await fetch(
+            "/offers/ogads",
+            {
+              method: "GET",
+              cache: "no-store"
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.success
+        ) {
+
+          throw new Error(
+            result.error ||
+            "Unable to load offers."
+          );
+
+        }
+
+
+        const data =
+          result.offers;
+
+
+        // =================================================
+        // HANDLE DIFFERENT OGADS RESPONSE FORMATS
+        // =================================================
+
+        let offers = [];
+
+
+        if (Array.isArray(data)) {
+
+          offers = data;
+
+        }
+
+        else if (
+          data &&
+          Array.isArray(data.offers)
+        ) {
+
+          offers =
+            data.offers;
+
+        }
+
+        else if (
+          data &&
+          Array.isArray(data.data)
+        ) {
+
+          offers =
+            data.data;
+
+        }
+
+
+        // =================================================
+        // NO OFFERS
+        // =================================================
+
+        if (
+          offers.length === 0
+        ) {
+
+          offersContainer.innerHTML = `
+
+            <div class="empty">
+
+              <h3>
+                😔 No offers available
+              </h3>
+
+              <p>
+                There are currently no offers
+                available for your device or location.
+                Please check again later.
+              </p>
+
+            </div>
+
+          `;
+
+          statusElement.textContent =
+            "No offers available";
+
+          return;
+
+        }
+
+
+        // =================================================
+        // DISPLAY OFFERS
+        // =================================================
+
+        offersContainer.innerHTML = "";
+
+
+        offers.forEach(
+          (offer, index) => {
+
+            const name =
+              offer.name ||
+              offer.title ||
+              offer.offer_name ||
+              "Available Offer";
+
+
+            const description =
+              offer.description ||
+              offer.desc ||
+              offer.instructions ||
+              "Complete this offer to earn rewards.";
+
+
+            const url =
+              offer.url ||
+              offer.link ||
+              offer.offer_url ||
+              offer.click_url ||
+              "#";
+
+
+            const payout =
+              Number(
+                offer.payout ||
+                offer.amount ||
+                offer.reward ||
+                0
+              );
+
+
+            const coins =
+              Math.floor(
+                payout * 250
+              );
+
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+
+            card.className =
+              "offer";
+
+
+            card.innerHTML = `
+
+              <div class="offer-top">
+
+                <div class="offer-name">
+                  ${escapeHtml(name)}
+                </div>
+
+                <div class="reward">
+                  +${coins.toLocaleString()} coins
+                </div>
+
+              </div>
+
+
+              <div class="description">
+                ${escapeHtml(description)}
+              </div>
+
+
+              <a
+                class="offer-button"
+                href="${escapeAttribute(url)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Start Offer →
+              </a>
+
+            `;
+
+
+            offersContainer.appendChild(
+              card
+            );
+
+          }
+        );
+
+
+        statusElement.textContent =
+          `${offers.length} offer${offers.length === 1 ? "" : "s"} available`;
+
+
+      } catch (error) {
+
+        console.error(
+          "OGAds frontend error:",
+          error
+        );
+
+
+        offersContainer.innerHTML = `
+
+          <div class="empty">
+
+            <h3>
+              ⚠️ Unable to load offers
+            </h3>
+
+            <p>
+              Please refresh the page and try again.
+            </p>
+
+          </div>
+
+        `;
+
+
+        statusElement.textContent =
+          "Unable to load offers";
+
+      }
+
+    }
+
+
+    // =================================================
+    // HTML ESCAPING
+    // =================================================
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    function escapeAttribute(value) {
+
+      return String(value)
+        .replace(
+          /"/g,
+          "%22"
+        )
+        .replace(
+          /'/g,
+          "%27"
+        );
+
+    }
+
+
+    // =================================================
+    // START
+    // =================================================
+
+    loadOGAdsOffers();
+
+  </script></body>
+</html>

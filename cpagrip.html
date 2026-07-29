@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CPAGrip Offers - TrustReward</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    .cpagrip-page {
+      min-height: 100vh;
+      padding: 20px;
+      padding-bottom: 40px;
+    }
+
+    .cpagrip-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 12px;
+      background: var(--card-bg, #1f2937);
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .cpagrip-title h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .cpagrip-title p {
+      margin: 4px 0 0;
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    .offer-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .offer-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--card-bg, #1f2937);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .offer-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .offer-description {
+      font-size: 14px;
+      opacity: 0.75;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .offer-reward {
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .offer-btn {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      text-align: center;
+      text-decoration: none;
+      background: var(--primary, #6366f1);
+      color: white;
+      font-weight: 700;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 10px;
+      opacity: 0.7;
+    }
+
+    .error-message {
+      text-align: center;
+      padding: 30px 15px;
+      color: #ff7777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="cpagrip-page">
+
+    <div class="cpagrip-header">
+
+      <button class="back-btn" onclick="history.back()">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+
+      <div class="cpagrip-title">
+        <h1>CPAGrip Offers</h1>
+        <p>Complete offers and earn TrustReward coins</p>
+      </div>
+
+    </div>
+
+    <div id="offer-list" class="offer-list">
+
+      <div class="loading">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p>Loading available offers...</p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script type="module">
+
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged
+    }
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCzZIrEyMnuvDPPqXl6m1ODxacEFfKyWxI",
+      authDomain: "trustreward-19165.firebaseapp.com",
+      databaseURL: "https://trustreward-19165-default-rtdb.firebaseio.com",
+      projectId: "trustreward-19165",
+      storageBucket: "trustreward-19165.firebasestorage.app",
+      messagingSenderId: "156070844909",
+      appId: "1:156070844909:web:8625342638350641ffafe4"
+    };
+
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    const offerList = document.getElementById("offer-list");
+
+
+    onAuthStateChanged(auth, async (user) => {
+
+      if (!user) {
+
+        offerList.innerHTML = `
+          <div class="error-message">
+            Please log in to view available offers.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      const userId = user.uid;
+
+
+      const feedUrl =
+        "https://www.cpagrip.com/common/offer_feed_json.php" +
+        "?user_id=2542470" +
+        "&pubkey=7a2ea6c2de6b79c02abfb924cd8c8e00" +
+        "&tracking_id=" + encodeURIComponent(userId);
+
+
+      try {
+
+        const response = await fetch(feedUrl);
+
+        if (!response.ok) {
+          throw new Error("Failed to load offers");
+        }
+
+        const data = await response.json();
+
+
+        if (!data.offers || data.offers.length === 0) {
+
+          offerList.innerHTML = `
+            <div class="error-message">
+              No offers are currently available for your location.
+            </div>
+          `;
+
+          return;
+        }
+
+
+        offerList.innerHTML = "";
+
+
+        data.offers.forEach((offer) => {
+
+          const title =
+            offer.title || "Available Offer";
+
+          const description =
+            offer.description || "Complete this offer to earn rewards.";
+
+          const payout =
+            offer.payout || "0";
+
+
+          const card = document.createElement("div");
+
+          card.className = "offer-card";
+
+
+          card.innerHTML = `
+
+            <h3>
+              <i class="fa-solid fa-gift"></i>
+              ${title}
+            </h3>
+
+            <div class="offer-description">
+              ${description}
+            </div>
+
+            <div class="offer-reward">
+              Earn ${payout}
+            </div>
+
+            <a
+              class="offer-btn"
+              href="${offer.offerlink}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Complete Offer
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+
+          `;
+
+
+          offerList.appendChild(card);
+
+        });
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        offerList.innerHTML = `
+
+          <div class="error-message">
+
+            Unable to load CPAGrip offers.
+
+            <br><br>
+
+            Please try again later.
+
+          </div>
+
+        `;
+
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>

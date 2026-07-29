@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>TrustReward</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOADING SCREEN
+====================================================== -->
+
+<section
+  id="screen-loading"
+  class="screen"
+>
+
+  <div class="loading-content">
+
+    <div class="loading-logo">
+      <i class="fa-solid fa-coins"></i>
+    </div>
+
+    <h2>TrustReward</h2>
+
+    <p>Loading your account...</p>
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     AUTH SCREEN
+====================================================== -->
+
+<section
+  id="screen-auth"
+  class="screen hidden"
+>
+
+
+  <!-- LOGIN -->
+
+  <div
+    id="auth-login"
+    class="auth-page"
+  >
+
+    <div class="auth-logo">
+
+      <div class="logo-icon">
+        <i class="fa-solid fa-coins"></i>
+      </div>
+
+      <h1>TrustReward</h1>
+
+      <p>
+        Earn rewards. Complete tasks. Get rewarded.
+      </p>
+
+    </div>
+
+
+    <div class="auth-card">
+
+      <h2>Welcome Back</h2>
+
+      <p>
+        Sign in to continue earning.
+      </p>
+
+
+      <div
+        id="login-error"
+        class="error-box hidden"
+      ></div>
+
+
+      <div class="input-group">
+
+        <label>Email Address</label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-envelope"></i>
+
+          <input
+            id="login-email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Password</label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-lock"></i>
+
+          <input
+            id="login-password"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          >
+
+          <button
+            type="button"
+            onclick="togglePw('login-password', this)"
+          >
+            <i class="fa-solid fa-eye"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="main-btn"
+        id="btn-login"
+        onclick="handleLogin()"
+      >
+
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+        Sign In
+
+      </button>
+
+
+      <button
+        class="text-btn"
+        onclick="showAuth('forgot')"
+      >
+        Forgot Password?
+      </button>
+
+
+      <p class="auth-switch">
+
+        Don't have an account?
+
+        <button onclick="showAuth('signup')">
+          Create Account
+        </button>
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- SIGNUP -->
+
+  <div
+    id="auth-signup"
+    class="auth-page hidden"
+  >
+
+    <div class="auth-logo">
+
+      <div class="logo-icon">
+        <i class="fa-solid fa-coins"></i>
+      </div>
+
+      <h1>Create Account</h1>
+
+      <p>
+        Start earning with TrustReward.
+      </p>
+
+    </div>
+
+
+    <div class="auth-card">
+
+      <h2>Create your account</h2>
+
+      <p>
+        Join TrustReward and start earning.
+      </p>
+
+
+      <div
+        id="signup-error"
+        class="error-box hidden"
+      ></div>
+
+
+      <div class="input-group">
+
+        <label>Full Name</label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-user"></i>
+
+          <input
+            id="signup-name"
+            type="text"
+            placeholder="Your full name"
+            autocomplete="name"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Email Address</label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-envelope"></i>
+
+          <input
+            id="signup-email"
+            type="email"
+            placeholder="Your email address"
+            autocomplete="email"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Strong Password</label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-lock"></i>
+
+          <input
+            id="signup-password"
+            type="password"
+            placeholder="Create a strong password"
+            autocomplete="new-password"
+          >
+
+          <button
+            type="button"
+            onclick="togglePw('signup-password', this)"
+          >
+            <i class="fa-solid fa-eye"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>
+          Referral Code
+          <span>Optional</span>
+        </label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-gift"></i>
+
+          <input
+            id="signup-referral"
+            type="text"
+            placeholder="Enter referral code"
+            autocomplete="off"
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="main-btn"
+        id="btn-signup"
+        onclick="handleSignup()"
+      >
+
+        <i class="fa-solid fa-user-plus"></i>
+
+        Create Account
+
+      </button>
+
+
+      <p class="auth-switch">
+
+        Already have an account?
+
+        <button onclick="showAuth('login')">
+          Sign In
+        </button>
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- FORGOT PASSWORD -->
+
+  <div
+    id="auth-forgot"
+    class="auth-page hidden"
+  >
+
+    <div class="auth-card">
+
+      <h2>Reset Password</h2>
+
+      <p>
+        Enter your email to receive a reset link.
+      </p>
+
+
+      <div
+        id="forgot-error"
+        class="error-box hidden"
+      ></div>
+
+
+      <div
+        id="forgot-success"
+        class="success-box hidden"
+      ></div>
+
+
+      <div class="input-group">
+
+        <label>Email Address</label>
+
+        <div class="input-wrap">
+
+          <i class="fa-solid fa-envelope"></i>
+
+          <input
+            id="forgot-email"
+            type="email"
+            placeholder="Enter your email"
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="main-btn"
+        onclick="handleForgotPassword()"
+      >
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+        Send Reset Email
+
+      </button>
+
+
+      <button
+        class="text-btn"
+        onclick="showAuth('login')"
+      >
+        Back to Login
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN APP
+====================================================== -->
+
+<section
+  id="screen-app"
+  class="hidden"
+>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header class="app-header">
+
+
+  <button
+    id="header-back"
+    class="header-back hidden"
+    onclick="goBack()"
+  >
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+  </button>
+
+
+  <div
+    id="header-logo"
+    class="header-logo"
+  >
+
+    <i class="fa-solid fa-coins"></i>
+
+    <span>
+      TrustReward
+    </span>
+
+  </div>
+
+
+  <h2
+    id="header-title"
+    class="header-title hidden"
+  ></h2>
+
+
+  <button
+    class="header-notification"
+    onclick="showPage('notifications')"
+  >
+
+    <i class="fa-regular fa-bell"></i>
+
+  </button>
+
+</header>
+
+
+
+<!-- =====================================================
+     HOME
+====================================================== -->
+
+<main
+  id="page-home"
+  class="main-page"
+>
+
+
+  <section class="welcome-section">
+
+    <p>Welcome back</p>
+
+    <h1 id="home-welcome">
+      Good day, User
+    </h1>
+
+  </section>
+
+
+
+  <!-- BALANCE -->
+
+  <section class="balance-card">
+
+    <div class="balance-top">
+
+      <span>
+        Available Balance
+      </span>
+
+      <i class="fa-solid fa-wallet"></i>
+
+    </div>
+
+
+    <div
+      id="home-coins"
+      class="balance-amount"
+    >
+      0
+    </div>
+
+
+    <div class="balance-label">
+      TrustReward Coins
+    </div>
+
+
+    <button
+      class="balance-btn"
+      onclick="showPage('withdrawal')"
+    >
+
+      Withdraw
+
+      <i class="fa-solid fa-arrow-right"></i>
+
+    </button>
+
+  </section>
+
+
+
+  <!-- USER ID -->
+
+  <section class="content-card user-id-card">
+
+    <div class="user-id-icon">
+
+      <i class="fa-solid fa-fingerprint"></i>
+
+    </div>
+
+
+    <div class="user-id-content">
+
+      <span>
+        Your User ID
+      </span>
+
+      <strong
+        id="home-user-id"
+        style="word-break:break-all;"
+      >
+        Loading...
+      </strong>
+
+    </div>
+
+
+    <button
+      type="button"
+      onclick="copyUserId()"
+      title="Copy User ID"
+    >
+
+      <i class="fa-regular fa-copy"></i>
+
+    </button>
+
+  </section>
+
+
+
+  <!-- STATS -->
+
+  <section class="stats-grid">
+
+
+    <div class="stat-card">
+
+      <i class="fa-solid fa-chart-line"></i>
+
+      <strong id="home-total-earned">
+        0
+      </strong>
+
+      <span>
+        Total Earned
+      </span>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <i class="fa-solid fa-users"></i>
+
+      <strong id="home-referrals">
+        0
+      </strong>
+
+      <span>
+        Referrals
+      </span>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- EARN -->
+
+  <section class="home-section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <h2>
+          Earn Coins
+        </h2>
+
+        <p>
+          Choose an activity and start earning.
+        </p>
+
+      </div>
+
+      <i class="fa-solid fa-arrow-trend-up"></i>
+
+    </div>
+
+
+    <div class="earn-grid">
+
+
+      <a
+        href="task.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+
+        <h3>Tasks</h3>
+
+        <p>
+          Complete available tasks.
+        </p>
+
+        <span>
+          Start earning
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="cpx.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+        </div>
+
+        <h3>CPx Research</h3>
+
+        <p>
+          Share your opinion and earn.
+        </p>
+
+        <span>
+          Take surveys
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="cpagrip.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+
+        <h3>CPAGrip</h3>
+
+        <p>
+          Complete offers and earn coins.
+        </p>
+
+        <span>
+          View offers
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+
+      <a
+        href="ogads.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+
+        <h3>OGAds</h3>
+
+        <p>
+          Complete available offers.
+        </p>
+
+        <span>
+          View offers
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="flexwall.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+
+        <h3>Flexwall</h3>
+
+        <p>
+          Discover more earning opportunities.
+        </p>
+
+        <span>
+          Start earning
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="timewall.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-leaf"></i>
+        </div>
+
+        <h3>TimeWall</h3>
+
+        <p>
+          Complete offers and earn rewards.
+        </p>
+
+        <span>
+          View offers
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+
+
+      <a
+        href="paidbucksy.html"
+        class="earn-card"
+      >
+
+        <div class="earn-icon">
+          <i class="fa-solid fa-coins"></i>
+        </div>
+
+        <h3>PaidBucksy</h3>
+
+        <p>
+          Earn more coins from offers.
+        </p>
+
+        <span>
+          Start earning
+          <i class="fa-solid fa-arrow-right"></i>
+        </span>
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- REFERRAL PROMO -->
+
+  <section class="promo-card">
+
+    <div>
+
+      <span>
+        Earn more with referrals
+      </span>
+
+      <h3>
+        Invite friends and get rewarded
+      </h3>
+
+      <button
+        onclick="showSubpage('referral')"
+      >
+
+        Refer & Earn
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+      </button>
+
+    </div>
+
+
+    <i class="fa-solid fa-users promo-icon"></i>
+
+  </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     LEADERBOARD
+====================================================== -->
+
+<main
+  id="page-leaderboard"
+  class="main-page hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-trophy"></i>
+
+    <h1>
+      Leaderboard
+    </h1>
+
+    <p>
+      See the top TrustReward earners.
+    </p>
+
+  </section>
+
+
+  <div class="content-card leaderboard-info">
+
+    <div>
+
+      <i class="fa-solid fa-ranking-star"></i>
+
+      <strong>
+        Top Earners
+      </strong>
+
+      <p>
+        Users are ranked by their total earned coins.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="leaderboard-list"
+    class="leaderboard-list"
+  >
+
+    <div class="loading-box">
+
+      <i class="fa-solid fa-spinner fa-spin"></i>
+
+      <p>
+        Loading leaderboard...
+      </p>
+
+    </div>
+
+  </div>
+
+
+</main>
+
+
+<!-- =====================================================
+     NOTIFICATIONS
+====================================================== -->
+
+<main
+  id="page-notifications"
+  class="main-page hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-regular fa-bell"></i>
+
+    <h1>
+      Notifications
+    </h1>
+
+    <p>
+      Your latest account updates.
+    </p>
+
+  </section>
+
+
+  <div
+    id="notifications-list"
+    class="notifications-list"
+  >
+
+    <div class="empty-state">
+
+      <i class="fa-regular fa-bell-slash"></i>
+
+      <h3>
+        No Notifications
+      </h3>
+
+      <p>
+        You are all caught up.
+      </p>
+
+    </div>
+
+  </div>
+
+
+</main>
+
+
+<!-- =====================================================
+     SETTINGS
+====================================================== -->
+
+<main
+  id="page-settings"
+  class="main-page hidden"
+>
+
+
+  <section class="profile-card">
+
+
+    <img
+      id="settings-avatar"
+      src="https://ui-avatars.com/api/?name=User"
+      alt="Profile"
+    >
+
+
+    <div>
+
+      <h2 id="settings-name">
+        User
+      </h2>
+
+      <p id="settings-email">
+        —
+      </p>
+
+      <span id="ep-status">
+        Active
+      </span>
+
+    </div>
+
+
+  </section>
+
+
+
+  <div class="settings-list">
+
+
+    <button
+      class="settings-item"
+      onclick="showSubpage('edit-profile')"
+    >
+
+      <i class="fa-solid fa-user-pen"></i>
+
+      <span>
+        Edit Profile
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+
+    <button
+      class="settings-item"
+      onclick="showSubpage('rules')"
+    >
+
+      <i class="fa-solid fa-shield-halved"></i>
+
+      <span>
+        TrustReward Rules
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+
+    <button
+      class="settings-item"
+      onclick="showSubpage('privacy')"
+    >
+
+      <i class="fa-solid fa-lock"></i>
+
+      <span>
+        Privacy Policy
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+
+    <button
+      class="settings-item"
+      onclick="showSubpage('terms')"
+    >
+
+      <i class="fa-solid fa-file-contract"></i>
+
+      <span>
+        Terms & Conditions
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+
+    <button
+      class="settings-item"
+      onclick="showSubpage('help')"
+    >
+
+      <i class="fa-solid fa-circle-question"></i>
+
+      <span>
+        Help Center
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+
+    <button
+      class="settings-item"
+      onclick="showSubpage('about')"
+    >
+
+      <i class="fa-solid fa-circle-info"></i>
+
+      <span>
+        About TrustReward
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+
+    <div class="theme-setting">
+
+      <div>
+
+        <i class="fa-solid fa-moon"></i>
+
+        <span>
+          Dark Mode
+        </span>
+
+      </div>
+
+
+      <label class="switch">
+
+        <input
+          id="theme-toggle"
+          type="checkbox"
+          onchange="toggleTheme(this.checked)"
+        >
+
+        <span class="slider"></span>
+
+      </label>
+
+    </div>
+
+
+
+    <button
+      class="settings-item logout-item"
+      onclick="handleLogout()"
+    >
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+
+      <span>
+        Sign Out
+      </span>
+
+      <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+  </div>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     REFERRAL
+====================================================== -->
+
+<main
+  id="page-referral"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-users"></i>
+
+    <h1>
+      Refer & Earn
+    </h1>
+
+    <p>
+      Invite friends to TrustReward and earn coins.
+    </p>
+
+  </section>
+
+
+
+  <div class="referral-code-card">
+
+    <span>
+      Your Referral Code
+    </span>
+
+    <strong id="referral-code-display">
+      —
+    </strong>
+
+    <button onclick="copyReferral()">
+
+      <i class="fa-regular fa-copy"></i>
+
+      Copy Code
+
+    </button>
+
+  </div>
+
+
+
+  <button
+    class="main-btn"
+    onclick="shareReferral()"
+  >
+
+    <i class="fa-solid fa-share-nodes"></i>
+
+    Share Referral Link
+
+  </button>
+
+
+</main>
+
+
+<!-- =====================================================
+     WITHDRAWAL
+====================================================== -->
+
+<main
+  id="page-withdrawal"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-money-bill-transfer"></i>
+
+    <h1>
+      Withdrawal
+    </h1>
+
+    <p>
+      Redeem your TrustReward coins.
+    </p>
+
+  </section>
+
+
+
+  <div class="withdraw-balance">
+
+    <span>
+      Your Balance
+    </span>
+
+    <strong id="wd-coins">
+      0
+    </strong>
+
+    <small>
+      Coins
+    </small>
+
+  </div>
+
+
+
+  <!-- BANK -->
+
+  <div class="withdraw-card">
+
+    <h3>
+
+      <i class="fa-solid fa-building-columns"></i>
+
+      Bank Transfer
+
+    </h3>
+
+
+    <p>
+      Minimum withdrawal: 2,000 coins $8
+    </p>
+
+
+    <div
+      id="bank-error"
+      class="error-box hidden"
+    ></div>
+
+
+    <input
+      id="bank-coins"
+      type="number"
+      min="2000"
+      placeholder="Coins to withdraw"
+    >
+
+
+    <input
+      id="bank-country"
+      type="text"
+      placeholder="Country"
+    >
+
+
+    <input
+      id="bank-name"
+      type="text"
+      placeholder="Bank name"
+    >
+
+
+    <input
+      id="bank-acct"
+      type="text"
+      placeholder="Account number"
+    >
+
+
+    <input
+      id="bank-acct-name"
+      type="text"
+      placeholder="Account name"
+    >
+
+
+    <button
+      class="main-btn"
+      onclick="submitWithdrawal('bank')"
+    >
+
+      Submit Bank Withdrawal
+
+    </button>
+
+
+  </div>
+
+
+
+  <!-- AIRTIME -->
+
+  <div class="withdraw-card">
+
+    <h3>
+
+      <i class="fa-solid fa-mobile-screen-button"></i>
+
+      Airtime
+
+    </h3>
+
+
+    <p>
+      400 coins = ₦500 airtime
+    </p>
+
+
+    <div
+      id="airtime-error"
+      class="error-box hidden"
+    ></div>
+
+
+    <input
+      id="airtime-country"
+      type="text"
+      placeholder="Country"
+    >
+
+
+    <input
+      id="airtime-phone"
+      type="tel"
+      placeholder="Phone number"
+    >
+
+
+    <button
+      class="main-btn"
+      onclick="submitWithdrawal('airtime')"
+    >
+
+      Request Airtime
+
+    </button>
+
+
+  </div>
+
+
+</main>
+
+
+<script src="https://pl30578596.effectivecpmnetwork.com/7a/b4/9d/7ab49d65b9e0560f65c28caaf8ca4776.js"></script>
+
+
+<!-- =====================================================
+     EDIT PROFILE
+====================================================== -->
+
+<main
+  id="page-edit-profile"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-user-pen"></i>
+
+    <h1>
+      Edit Profile
+    </h1>
+
+    <p>
+      Update your TrustReward profile.
+    </p>
+
+  </section>
+
+
+
+  <div class="profile-edit-card">
+
+
+    <img
+      id="ep-avatar"
+      src="https://ui-avatars.com/api/?name=User"
+      alt="Profile"
+    >
+
+
+    <button onclick="triggerPhotoUpload()">
+      Change Photo
+    </button>
+
+
+    <input
+      id="photo-input"
+      type="file"
+      accept="image/*"
+      hidden
+      onchange="handlePhotoUpload(this)"
+    >
+
+
+  </div>
+
+
+
+  <div
+    id="ep-error"
+    class="error-box hidden"
+  ></div>
+
+
+
+  <div class="input-group">
+
+    <label>
+      Full Name
+    </label>
+
+    <input
+      id="ep-name"
+      type="text"
+    >
+
+  </div>
+
+
+
+  <div class="input-group">
+
+    <label>
+      Email
+    </label>
+
+    <input
+      id="ep-email"
+      type="email"
+      readonly
+    >
+
+  </div>
+
+
+
+  <button
+    class="main-btn"
+    onclick="saveProfile()"
+  >
+
+    Save Changes
+
+  </button>
+
+
+</main>
+
+
+<!-- =====================================================
+     RULES
+====================================================== -->
+
+<main
+  id="page-rules"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-shield-halved"></i>
+
+    <h1>
+      TrustReward Rules
+    </h1>
+
+    <p>
+      Please follow these rules to keep TrustReward fair and safe.
+    </p>
+
+  </section>
+
+
+
+  <div class="content-card rules-card">
+
+
+    <div class="rule-item">
+
+      <strong>
+        1. Use One Account
+      </strong>
+
+      <p>
+        Each user is allowed to maintain only one TrustReward account.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        2. Use Real Information
+      </strong>
+
+      <p>
+        Always provide accurate information when completing tasks, surveys, offers, and withdrawals.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        3. Complete Activities Honestly
+      </strong>
+
+      <p>
+        Complete tasks, surveys, and offers according to their instructions.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        4. No Fraudulent Activity
+      </strong>
+
+      <p>
+        Fraud, fake information, bots, automation, or attempts to manipulate rewards are prohibited.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        5. Do Not Abuse Offers
+      </strong>
+
+      <p>
+        Do not exploit duplicate rewards, bugs, errors, or repeated offer completions.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        6. Follow Offer Requirements
+      </strong>
+
+      <p>
+        Some activities require specific conditions. Failure to meet them may result in no reward.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        7. Use Genuine Withdrawal Details
+      </strong>
+
+      <p>
+        Withdrawal information must be accurate and authorized for use.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        8. Do Not Exploit Technical Errors
+      </strong>
+
+      <p>
+        Report technical errors instead of attempting to use them to obtain incorrect rewards.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        9. Account Reviews
+      </strong>
+
+      <p>
+        TrustReward may review accounts and transactions when suspicious activity is detected.
+      </p>
+
+    </div>
+
+
+    <div class="rule-item">
+
+      <strong>
+        10. Withdrawal Processing
+      </strong>
+
+      <p>
+        Withdrawals may take 1 to 3 market days to review and process.
+      </p>
+
+    </div>
+
+
+  </div>
+
+
+</main>
+
+
+<!-- =====================================================
+     PRIVACY POLICY
+====================================================== -->
+
+<main
+  id="page-privacy"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-lock"></i>
+
+    <h1>
+      Privacy Policy
+    </h1>
+
+    <p>
+      Your privacy matters to us.
+    </p>
+
+  </section>
+
+
+
+  <div class="content-card privacy-card">
+
+
+    <div class="privacy-item">
+
+      <strong>
+        1. Information We Collect
+      </strong>
+
+      <p>
+        We may collect your name, email address, account information, activity information, and withdrawal information.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        2. Account Information
+      </strong>
+
+      <p>
+        Account information is used to create and manage your TrustReward account.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        3. Reward Information
+      </strong>
+
+      <p>
+        We may record completed activities, earned coins, referrals, and reward transactions.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        4. Withdrawal Information
+      </strong>
+
+      <p>
+        Information submitted for withdrawals is used to process and review your request.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        5. Fraud Prevention
+      </strong>
+
+      <p>
+        Information may be used to detect suspicious activity, fraud, abuse, and multiple-account activity.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        6. Third-Party Services
+      </strong>
+
+      <p>
+        Some activities may be provided by third-party survey, offer, task, or reward providers.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        7. Information Security
+      </strong>
+
+      <p>
+        We take reasonable steps to help protect account information and platform activity.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        8. Personal Information
+      </strong>
+
+      <p>
+        We do not sell your personal information to third parties.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        9. Support Messages
+      </strong>
+
+      <p>
+        Messages sent to TrustReward Support may be stored so we can respond to your questions and requests.
+      </p>
+
+    </div>
+
+
+    <div class="privacy-item">
+
+      <strong>
+        10. Policy Updates
+      </strong>
+
+      <p>
+        This Privacy Policy may be updated from time to time as TrustReward develops.
+      </p>
+
+    </div>
+
+
+  </div>
+
+
+</main>
+
+
+<!-- =====================================================
+     TERMS & CONDITIONS
+====================================================== -->
+
+<main
+  id="page-terms"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-file-contract"></i>
+
+    <h1>
+      Terms & Conditions
+    </h1>
+
+    <p>
+      Please read these terms before using TrustReward.
+    </p>
+
+  </section>
+
+
+
+  <div class="content-card terms-card">
+
+
+    <div class="terms-item">
+
+      <strong>
+        1. Acceptance of Terms
+      </strong>
+
+      <p>
+        By creating or using a TrustReward account, you agree to follow these Terms & Conditions.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        2. Account Ownership
+      </strong>
+
+      <p>
+        Each person should use only one TrustReward account unless otherwise authorized.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        3. Accurate Information
+      </strong>
+
+      <p>
+        You are responsible for providing accurate information when creating an account and requesting rewards.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        4. Earning Activities
+      </strong>
+
+      <p>
+        Rewards are available only for eligible activities successfully completed according to their requirements.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        5. Reward Verification
+      </strong>
+
+      <p>
+        Some rewards may require verification from TrustReward or a third-party activity provider.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        6. Suspicious Activity
+      </strong>
+
+      <p>
+        Accounts involved in suspected fraud, abuse, manipulation, or other prohibited activity may be reviewed.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        7. Withdrawals
+      </strong>
+
+      <p>
+        Withdrawal requests are subject to the applicable minimum balance, verification, and processing requirements.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        8. Processing Time
+      </strong>
+
+      <p>
+        Withdrawal processing may take 1 to 3 market days depending on review and payment processing.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        9. Service Availability
+      </strong>
+
+      <p>
+        TrustReward may temporarily modify, suspend, or discontinue features for maintenance, security, or other operational reasons.
+      </p>
+
+    </div>
+
+
+    <div class="terms-item">
+
+      <strong>
+        10. Changes to Terms
+      </strong>
+
+      <p>
+        These Terms & Conditions may be updated when necessary. Continued use of TrustReward after changes means you accept the updated terms.
+      </p>
+
+    </div>
+
+
+  </div>
+
+
+</main>
+
+
+<script src="https://pl30463122.effectivecpmnetwork.com/dd/3f/5b/dd3f5b636beca23045bbb03f7d91345c.js"></script>
+
+<!-- =====================================================
+     HELP CENTER
+====================================================== -->
+
+<main
+  id="page-help"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-circle-question"></i>
+
+    <h1>
+      Help Center
+    </h1>
+
+    <p>
+      Need help? Send a message to TrustReward Support.
+    </p>
+
+  </section>
+
+
+
+  <div class="content-card support-card">
+
+
+    <div class="support-header">
+
+      <i class="fa-solid fa-headset"></i>
+
+      <div>
+
+        <h3>
+          TrustReward Support
+        </h3>
+
+        <p>
+          Contact support about your account, rewards, offers, or withdrawals.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="support-notice">
+
+      <i class="fa-solid fa-circle-info"></i>
+
+      <p>
+        Please include enough information about your issue so support can assist you.
+      </p>
+
+    </div>
+
+
+
+    <div
+      id="support-error"
+      class="error-box hidden"
+    ></div>
+
+
+
+    <div
+      id="support-success"
+      class="success-box hidden"
+    ></div>
+
+
+
+    <div class="input-group">
+
+      <label>
+        Subject
+      </label>
+
+      <input
+        id="support-subject"
+        type="text"
+        placeholder="What do you need help with?"
+      >
+
+    </div>
+
+
+
+    <div class="input-group">
+
+      <label>
+        Your Message
+      </label>
+
+      <textarea
+        id="support-message"
+        rows="7"
+        placeholder="Write your message here..."
+      ></textarea>
+
+    </div>
+
+
+
+    <button
+      class="main-btn"
+      id="support-send-btn"
+      onclick="sendSupportMessage()"
+    >
+
+      <i class="fa-solid fa-paper-plane"></i>
+
+      Send Message
+
+    </button>
+
+
+  </div>
+
+
+</main>
+
+
+<script src="https://pl30463122.effectivecpmnetwork.com/dd/3f/5b/dd3f5b636beca23045bbb03f7d91345c.js"></script>
+
+
+<!-- =====================================================
+     ABOUT TRUSTREWARD
+====================================================== -->
+
+<main
+  id="page-about"
+  class="subpage hidden"
+>
+
+
+  <section class="page-intro">
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    <h1>
+      About TrustReward
+    </h1>
+
+    <p>
+      Learn more about TrustReward.
+    </p>
+
+  </section>
+
+
+
+  <div class="content-card about-card">
+
+
+    <div class="about-logo">
+
+      <i class="fa-solid fa-coins"></i>
+
+    </div>
+
+
+    <h2>
+      TrustReward
+    </h2>
+
+
+    <div class="about-badge">
+
+      <i class="fa-solid fa-circle-check"></i>
+
+      Rewards Platform
+
+    </div>
+
+
+    <p>
+      TrustReward is a rewards platform where users can discover available tasks, surveys, offers, and other earning activities.
+    </p>
+
+
+    <p>
+      Users can complete eligible activities and receive TrustReward Coins when the activity is successfully verified.
+    </p>
+
+
+    <div class="about-feature-grid">
+
+
+      <div class="about-feature">
+
+        <i class="fa-solid fa-list-check"></i>
+
+        <strong>
+          Tasks
+        </strong>
+
+        <span>
+          Complete available activities.
+        </span>
+
+      </div>
+
+
+      <div class="about-feature">
+
+        <i class="fa-solid fa-square-poll-vertical"></i>
+
+        <strong>
+          Surveys
+        </strong>
+
+        <span>
+          Share your opinions.
+        </span>
+
+      </div>
+
+
+      <div class="about-feature">
+
+        <i class="fa-solid fa-gift"></i>
+
+        <strong>
+          Offers
+        </strong>
+
+        <span>
+          Discover available offers.
+        </span>
+
+      </div>
+
+
+      <div class="about-feature">
+
+        <i class="fa-solid fa-money-bill-transfer"></i>
+
+        <strong>
+          Rewards
+        </strong>
+
+        <span>
+          Request eligible withdrawals.
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+    <div class="app-version">
+
+      <span>
+        App Version
+      </span>
+
+      <strong>
+        1.0.0
+      </strong>
+
+    </div>
+
+
+    <div class="about-footer">
+
+      <i class="fa-solid fa-shield-halved"></i>
+
+      <span>
+        Use TrustReward responsibly and follow the platform rules.
+      </span>
+
+    </div>
+
+
+  </div>
+
+
+</main>
+
+
+
+<script src="https://pl30463122.effectivecpmnetwork.com/dd/3f/5b/dd3f5b636beca23045bbb03f7d91345c.js"></script>
+
+<!-- =====================================================
+     BOTTOM NAVIGATION
+====================================================== -->
+
+<nav class="bottom-nav">
+
+
+  <button
+    class="nav-item active"
+    data-page="home"
+    onclick="showPage('home')"
+  >
+
+    <i class="fa-solid fa-house"></i>
+
+    <span>
+      Home
+    </span>
+
+  </button>
+
+
+
+  <button
+    class="nav-item"
+    data-page="leaderboard"
+    onclick="showPage('leaderboard')"
+  >
+
+    <i class="fa-solid fa-trophy"></i>
+
+    <span>
+      Leaderboard
+    </span>
+
+  </button>
+
+
+
+  <button
+    class="nav-item"
+    data-page="notifications"
+    onclick="showPage('notifications')"
+  >
+
+    <i class="fa-regular fa-bell"></i>
+
+    <span>
+      Alerts
+    </span>
+
+  </button>
+
+
+
+  <button
+    class="nav-item"
+    data-page="settings"
+    onclick="showPage('settings')"
+  >
+
+    <i class="fa-solid fa-gear"></i>
+
+    <span>
+      Settings
+    </span>
+
+  </button>
+
+
+</nav>
+
+
+</section>
+
+
+<!-- =====================================================
+     TOAST
+====================================================== -->
+
+<div
+  id="toast"
+  class="toast hidden"
+></div>
+
+
+
+<!-- =====================================================
+     ADS
+====================================================== -->
+
+
+<script async="async" data-cfasync="false" src="https://pl30463121.effectivecpmnetwork.com/e7fc446e167912d3a4b6f295d434db43/invoke.js"></script>
+<div id="container-e7fc446e167912d3a4b6f295d434db43"></div>
+
+<script src="https://pl30578596.effectivecpmnetwork.com/7a/b4/9d/7ab49d65b9e0560f65c28caaf8ca4776.js"></script>
+
+
+<!-- =====================================================
+     APP JS
+====================================================== -->
+
+<script
+  type="module"
+  src="app.js"
+></script>
+
+
+</body>
+
+</html>
